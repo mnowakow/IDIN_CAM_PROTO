@@ -28,6 +28,7 @@ class SimplePdfViewer extends StatefulWidget {
   final List<int>? filter;
   final ValueChanged<int>? onPageTap;
   ScrollNotifier? scrollNotifier;
+  String pageName;
 
   SimplePdfViewer({
     super.key,
@@ -36,6 +37,7 @@ class SimplePdfViewer extends StatefulWidget {
     this.filter,
     this.onPageTap,
     this.scrollNotifier,
+    required this.pageName,
   });
 
   @override
@@ -357,6 +359,7 @@ class PdfView extends StatelessWidget {
         return false;
       },
       child: SingleChildScrollView(
+        key: PageStorageKey('pdf_scroll_view_${widget.pageName}'),
         controller: scrollController,
         child: Stack(
           children: [

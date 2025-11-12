@@ -58,6 +58,7 @@ class _MyAppState extends State<MyApp> {
             isMiniview: false,
             filter: null,
             scrollNotifier: scrollNotifier,
+            pageName: 'mainView',
           ),
           ExpandableSidebar(
             position: SidebarPosition.right,

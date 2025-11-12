@@ -19,6 +19,7 @@ class MiniView extends StatelessWidget {
       isMiniview: true,
       filter: null,
       scrollNotifier: scrollNotifier,
+      pageName: 'miniview',
     );
   }
 }

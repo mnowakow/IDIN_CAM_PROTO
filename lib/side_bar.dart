@@ -37,12 +37,12 @@ class _ExpandableSidebarState extends State<ExpandableSidebar> {
       width:
           widget.position == SidebarPosition.left ||
                   widget.position == SidebarPosition.right
-              ? (expanded ? 200 : 70)
+              ? (expanded ? (470) : 70)
               : double.infinity,
       height:
           widget.position == SidebarPosition.top ||
                   widget.position == SidebarPosition.bottom
-              ? (expanded ? 200 : 40)
+              ? (expanded ? 400 : 40)
               : double.infinity,
       child: Row(
         textDirection:
@@ -50,21 +50,61 @@ class _ExpandableSidebarState extends State<ExpandableSidebar> {
                 ? TextDirection.rtl
                 : TextDirection.ltr,
         children: [
-          // Main sidebar column
-          Expanded(
+          // Main sidebar column - feste Breite
+          Container(
+            width: 70,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Stack(
+                  children: [
+                    IconButton(
+                      iconSize: 40,
+                      icon: Icon(Icons.first_page_rounded, size: 40),
+                      onPressed:
+                          () => setState(() {
+                            expanded = expanded;
+                            //selectedWidget = SideBarWidget.pageOne;
+                            widget.scrollNotifier.scrollToPage(1);
+                          }),
+                    ),
+                    Positioned(
+                      right: 8,
+                      top: 8,
+                      child: Container(
+                        decoration: BoxDecoration(color: Colors.amber),
+                        child: Text(
+                          '1',
+                          style: TextStyle(
+                            color: Colors.grey[800],
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24),
                 IconButton(
                   iconSize: 40,
                   icon: Icon(Icons.auto_awesome_mosaic, size: 40),
                   onPressed:
                       () => setState(() {
-                        if (selectedWidget == SideBarWidget.miniView) {
-                          expanded = !expanded;
-                        }
+                        expanded = !expanded;
                         selectedWidget = SideBarWidget.miniView;
-                        SidebarNotifier.instance.openSidebar = selectedWidget;
+                        if (SidebarNotifier.instance.openSidebar !=
+                            SideBarWidget.miniView) {
+                          SidebarNotifier.instance.openSidebar = selectedWidget;
+                        } else {
+                          SidebarNotifier.instance.openSidebar =
+                              SideBarWidget.none;
+                        }
+                        // if (selectedWidget == SideBarWidget.miniView) {
+                        //   expanded = !expanded;
+                        // }
+                        // selectedWidget = SideBarWidget.miniView;
+                        // SidebarNotifier.instance.openSidebar = selectedWidget;
                       }),
                 ),
                 // SizedBox(height: 24),
@@ -161,21 +201,28 @@ class _ExpandableSidebarState extends State<ExpandableSidebar> {
           ),
           // Expanded content column
           if (expanded)
-            Expanded(
-              child:
-                  selectedWidget == SideBarWidget.miniView
-                      ? MiniView(
-                        pdfAssetPath: "assets/pdfs/lafiamma.pdf",
-                        scrollNotifier: widget.scrollNotifier,
-                      )
-                      : selectedWidget == SideBarWidget.bookmarks
-                      ? FilteredView(
-                        isMiniView: true,
-                        scrollNotifier: widget.scrollNotifier,
-                      )
-                      : selectedWidget == SideBarWidget.colorPalette
-                      ? Container() //ColorPaletteView()
-                      : Container(),
+            Container(
+              width: 400, // Feste Breite für Content
+              child: Column(
+                children: [
+                  Expanded(
+                    child:
+                        selectedWidget == SideBarWidget.miniView
+                            ? MiniView(
+                              pdfAssetPath: "assets/pdfs/lafiamma.pdf",
+                              scrollNotifier: widget.scrollNotifier,
+                            )
+                            : selectedWidget == SideBarWidget.bookmarks
+                            ? FilteredView(
+                              isMiniView: true,
+                              scrollNotifier: widget.scrollNotifier,
+                            )
+                            : selectedWidget == SideBarWidget.colorPalette
+                            ? Container() //ColorPaletteView()
+                            : Container(),
+                  ),
+                ],
+              ),
             ),
         ],
       ),

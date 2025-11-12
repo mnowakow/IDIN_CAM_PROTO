@@ -48,6 +48,7 @@ class _FilteredViewState extends State<FilteredView> {
       isMiniview: widget.isMiniView,
       filter: filterNotifier.pages,
       scrollNotifier: widget.scrollNotifier,
+      pageName: "filteredView",
       onPageTap: (int page) {
         if (widget.isMiniView) return;
         Navigator.of(context).pop();
